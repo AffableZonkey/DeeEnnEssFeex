@@ -1,10 +1,11 @@
 #!/usr/env/python3
 
 import xmlrpc.client
+from os import environ
 
 api = xmlrpc.client.ServerProxy('https://rpc.gandi.net/xmlrpc/')
 
-apikey = 'oAFhVlciLVtLxWHVkcBVItxX'
+apikey = environ.get('GNDI_APIKEY')
 
 #zonk_info = api.domain.info(apikey, 'zonkey.space')
 #print(zonk_info)
