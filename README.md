@@ -1,2 +1,2 @@
-# DeeEnnEssFeex
+# DynDoPyte
 Updates a DNS record
