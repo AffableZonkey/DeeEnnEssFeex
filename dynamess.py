@@ -41,8 +41,6 @@ def update_zone_sngl_record(zone, dom_rec_name, dom_rec_type, rec_new_val):
                                 headers=zone_headers, json=zone_data)
     print(zone_rec_chg.json())
 
-## try the record update with the zone uuid
-
 myptr, myip = get_my_dns()
 #print("My PTR record is {}, and my IP is {}".format(myptr, myip))
 get_zone_info("segfawlty.space")
