@@ -2,14 +2,33 @@
 
 import requests
 import json
+import click
 
-def get_my_dns():
+@click.command()
+@click.option('--check', help='Requires one of --zone, --record, or --ip. Default is --ip')
+@click.option('--update', help='Requires one of --zone or --record')
+@click.option('--delete', help='Requires one of --zone or --record')
+@click.argument('ip')
+@click.argument('zone')
+@click.argument('key')
+@click.argument('rec')
+@click.argument('rrtype')
+def naymz():
+    pass
+
+
+
+def myip():
     my_home_dns = requests.get('https://icanhazip.com')
     my_home_ptr = requests.get('https://icanhazptr.com')
     if my_home_dns.status_code == 200 and my_home_ptr.status_code == 200:
+        click.echo(my_home_ptr.text, my_home_dns.text)
         return(my_home_ptr.text, my_home_dns.text)
     else:
-        print("No records retrieved.")
+        click.echo("No records retrieved.")
+
+if __name__ == '__main__':
+    naymz()
 
 def get_gandi_key():
     with open('/home/zach/.python.secrets.json', 'r') as secrets:
