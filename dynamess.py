@@ -16,19 +16,15 @@ import click
 def naymz():
     pass
 
-
-
-def myip():
+def get_my_ip():
     my_home_dns = requests.get('https://icanhazip.com')
     my_home_ptr = requests.get('https://icanhazptr.com')
     if my_home_dns.status_code == 200 and my_home_ptr.status_code == 200:
-        click.echo(my_home_ptr.text, my_home_dns.text)
+#       click.echo(my_home_ptr.text, my_home_dns.text)
         return(my_home_ptr.text, my_home_dns.text)
     else:
-        click.echo("No records retrieved.")
-
-if __name__ == '__main__':
-    naymz()
+#       click.echo("No records retrieved.")
+        pass
 
 def get_gandi_key():
     with open('/home/zach/.python.secrets.json', 'r') as secrets:
@@ -42,7 +38,9 @@ def get_gandi_key():
 def get_zone_info(zone):
     zone_headers = {"X-Api-Key": get_gandi_key()}
     zone_info_get = requests.get(('https://dns.api.gandi.net/api/v5/domains/' + zone + '/records'), headers=zone_headers)
-    print(zone_info_get.json())
+    zone_json = zone_info_get.json()
+    for item in zone_json:
+        print(json.dumps(item))
 
 def get_zone_sngl_record(zone, dom_rec_name):
     zone_headers = {"X-Api-Key": get_gandi_key()}
@@ -60,7 +58,7 @@ def update_zone_sngl_record(zone, dom_rec_name, dom_rec_type, rec_new_val):
                                 headers=zone_headers, json=zone_data)
     print(zone_rec_chg.json())
 
-myptr, myip = get_my_dns()
+myptr, myip = get_my_ip()
 #print("My PTR record is {}, and my IP is {}".format(myptr, myip))
 get_zone_info("segfawlty.space")
 #get_zone_sngl_record("segfawlty.space", "@")
