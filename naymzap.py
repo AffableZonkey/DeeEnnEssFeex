@@ -4,18 +4,6 @@ import requests
 import json
 import typer
 
-'''
-@click.command()
-@click.option('--check', help='Requires one of --zone, --record, or --ip. Default is --ip')
-@click.option('--update', help='Requires one of --zone or --record')
-@click.option('--delete', help='Requires one of --zone or --record')
-@click.argument('ip')
-@click.argument('zone')
-@click.argument('key')
-@click.argument('rec')
-@click.argument('rrtype')
-'''
-
 naymzap = typer.Typer()
 
 
