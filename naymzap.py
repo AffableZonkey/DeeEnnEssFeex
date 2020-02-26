@@ -27,7 +27,7 @@ def get_gandi_key():
     if gandi_key:
         return (gandi_key)
     else:
-        print("Could not retreive key")
+        print("Could not retrieve key")
 
 
 @naymzap.command()
@@ -37,7 +37,7 @@ def get_zone_info(zone: str):
         zone_info_get = requests.get(('https://dns.api.gandi.net/api/v5/domains/' + zone + '/records'),
                                      headers=zone_headers)
     except requests.exceptions.RequestException as e:
-        typer.echo(e, f'Naymzap Failed: {} ')
+        typer.echo(f"Naymzap Failed: {e} ")
         sys.exit(1)
     if zone_info_get.status_code == 200:
         return zone_info_get.json()
@@ -55,7 +55,7 @@ def get_record(zone: str, dom_rec_name: str):
         zone_rec_get = requests.get(('https://dns.api.gandi.net/api/v5/domains/' + zone + '/records/' + dom_rec_name),
                                     headers=zone_headers, params=zone_parms)
     except requests.exceptions.RequestException as e:
-        typer.echo(e, f'Naymzap Failed: {} ')
+        typer.echo(f'Naymzap Failed: {e} ')
         sys.exit(1)
     if zone_rec_get.status_code == 200:
         return zone_rec_get.json()
@@ -77,8 +77,12 @@ def update_record(zone: str, dom_rec_name: str, dom_rec_type: str, rec_new_val: 
 
 @naymzap.command()
 def auto_dns_fix(domain: str,):
-    zone_records = get_zone_info(domain)
-    ptr, ip_addr = get_ip()
+    try:
+        zone_records = get_zone_info(domain)
+        ptr, ip_addr = get_ip()
+    except requests.exceptions.RequestException as e:
+        typer.echo(f"Naymzap has let you down - {e}")
+        sys.exit(1)
     for record in zone_records:
         if record.rrset_type and record.rrset_type == "A":
             if ip_addr not in record.rrset_values.iteritems() and len(record.rrset_values) <= 1:
